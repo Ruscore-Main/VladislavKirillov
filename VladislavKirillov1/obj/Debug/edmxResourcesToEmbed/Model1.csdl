@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="DirectorSet" EntityType="Model1.Director" />
+    <EntitySet Name="EmployeeSet" EntityType="Model1.Employee" />
+    <EntitySet Name="ProductSet" EntityType="Model1.Product" />
+    <EntitySet Name="WorkListSet" EntityType="Model1.WorkList" />
+    <AssociationSet Name="EmployeeWorkList" Association="Model1.EmployeeWorkList">
+      <End Role="Employee" EntitySet="EmployeeSet" />
+      <End Role="WorkList" EntitySet="WorkListSet" />
+    </AssociationSet>
+    <AssociationSet Name="WorkListProduct" Association="Model1.WorkListProduct">
+      <End Role="WorkList" EntitySet="WorkListSet" />
+      <End Role="Product" EntitySet="ProductSet" />
+    </AssociationSet>
+    <EntitySet Name="ShopSet" EntityType="Model1.Shop" />
+    <AssociationSet Name="EmployeeShop" Association="Model1.EmployeeShop">
+      <End Role="Employee" EntitySet="EmployeeSet" />
+      <End Role="Shop" EntitySet="ShopSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Director">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" />
+    <Property Name="Surname" Type="String" Nullable="false" />
+    <Property Name="Patronimyc" Type="String" Nullable="false" />
+    <Property Name="Post" Type="String" Nullable="false" />
+    <Property Name="Login" Type="String" Nullable="false" />
+    <Property Name="Password" Type="String" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" />
+    <Property Name="Surname" Type="String" Nullable="false" />
+    <Property Name="Patronymic" Type="String" Nullable="false" />
+    <Property Name="Login" Type="String" Nullable="false" />
+    <Property Name="Password" Type="String" Nullable="false" />
+    <NavigationProperty Name="WorkList" Relationship="Model1.EmployeeWorkList" FromRole="Employee" ToRole="WorkList" />
+    <NavigationProperty Name="Shop" Relationship="Model1.EmployeeShop" FromRole="Employee" ToRole="Shop" />
+    <Property Name="ShopId" Type="Int32" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" />
+    <Property Name="Price" Type="Int32" Nullable="false" />
+    <Property Name="Difficulty" Type="String" Nullable="false" />
+    <Property Name="PreparationTime" Type="Int32" Nullable="false" />
+    <Property Name="Amount" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="WorkList" Relationship="Model1.WorkListProduct" FromRole="Product" ToRole="WorkList" />
+    <Property Name="WorkListId" Type="Int32" Nullable="true" />
+  </EntityType>
+  <EntityType Name="WorkList">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="Employee" Relationship="Model1.EmployeeWorkList" FromRole="WorkList" ToRole="Employee" />
+    <NavigationProperty Name="Product" Relationship="Model1.WorkListProduct" FromRole="WorkList" ToRole="Product" />
+    <Property Name="TotalProductionTime" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="EmployeeWorkList">
+    <End Type="Model1.Employee" Role="Employee" Multiplicity="0..1" />
+    <End Type="Model1.WorkList" Role="WorkList" Multiplicity="0..1" />
+  </Association>
+  <Association Name="WorkListProduct">
+    <End Type="Model1.WorkList" Role="WorkList" Multiplicity="0..1" />
+    <End Type="Model1.Product" Role="Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WorkList">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="WorkListId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Shop">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" />
+    <Property Name="Address" Type="String" Nullable="false" />
+    <NavigationProperty Name="Employee" Relationship="Model1.EmployeeShop" FromRole="Shop" ToRole="Employee" />
+  </EntityType>
+  <Association Name="EmployeeShop">
+    <End Type="Model1.Employee" Role="Employee" Multiplicity="*" />
+    <End Type="Model1.Shop" Role="Shop" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Shop">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="ShopId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="DirectorSet" EntityType="Model1.Store.DirectorSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EmployeeSet" EntityType="Model1.Store.EmployeeSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ProductSet" EntityType="Model1.Store.ProductSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="WorkListSet" EntityType="Model1.Store.WorkListSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ShopSet" EntityType="Model1.Store.ShopSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="EmployeeWorkList" Association="Model1.Store.EmployeeWorkList">
+      <End Role="Employee" EntitySet="EmployeeSet" />
+      <End Role="WorkList" EntitySet="WorkListSet" />
+    </AssociationSet>
+    <AssociationSet Name="WorkListProduct" Association="Model1.Store.WorkListProduct">
+      <End Role="WorkList" EntitySet="WorkListSet" />
+      <End Role="Product" EntitySet="ProductSet" />
+    </AssociationSet>
+    <AssociationSet Name="EmployeeShop" Association="Model1.Store.EmployeeShop">
+      <End Role="Employee" EntitySet="EmployeeSet" />
+      <End Role="Shop" EntitySet="ShopSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="DirectorSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Patronimyc" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Post" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Login" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EmployeeSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Patronymic" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Login" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ShopId" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ProductSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Price" Type="int" Nullable="false" />
+    <Property Name="Difficulty" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PreparationTime" Type="int" Nullable="false" />
+    <Property Name="Amount" Type="int" Nullable="false" />
+    <Property Name="WorkListId" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="WorkListSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TotalProductionTime" Type="int" Nullable="false" />
+    <Property Name="Employee_Id" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ShopSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="EmployeeWorkList">
+    <End Role="Employee" Type="Model1.Store.EmployeeSet" Multiplicity="0..1" />
+    <End Role="WorkList" Type="Model1.Store.WorkListSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="WorkList">
+        <PropertyRef Name="Employee_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="WorkListProduct">
+    <End Role="WorkList" Type="Model1.Store.WorkListSet" Multiplicity="0..1" />
+    <End Role="Product" Type="Model1.Store.ProductSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WorkList">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="WorkListId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EmployeeShop">
+    <End Role="Employee" Type="Model1.Store.EmployeeSet" Multiplicity="*" />
+    <End Role="Shop" Type="Model1.Store.ShopSet" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Shop">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="ShopId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DirectorSet" EntityType="Model1.Director" />
+          <EntitySet Name="EmployeeSet" EntityType="Model1.Employee" />
+          <EntitySet Name="ProductSet" EntityType="Model1.Product" />
+          <EntitySet Name="WorkListSet" EntityType="Model1.WorkList" />
+          <AssociationSet Name="EmployeeWorkList" Association="Model1.EmployeeWorkList">
+            <End Role="Employee" EntitySet="EmployeeSet" />
+            <End Role="WorkList" EntitySet="WorkListSet" />
+          </AssociationSet>
+          <AssociationSet Name="WorkListProduct" Association="Model1.WorkListProduct">
+            <End Role="WorkList" EntitySet="WorkListSet" />
+            <End Role="Product" EntitySet="ProductSet" />
+          </AssociationSet>
+          <EntitySet Name="ShopSet" EntityType="Model1.Shop" />
+          <AssociationSet Name="EmployeeShop" Association="Model1.EmployeeShop">
+            <End Role="Employee" EntitySet="EmployeeSet" />
+            <End Role="Shop" EntitySet="ShopSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Director">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Surname" Type="String" Nullable="false" />
+          <Property Name="Patronimyc" Type="String" Nullable="false" />
+          <Property Name="Post" Type="String" Nullable="false" />
+          <Property Name="Login" Type="String" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Surname" Type="String" Nullable="false" />
+          <Property Name="Patronymic" Type="String" Nullable="false" />
+          <Property Name="Login" Type="String" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" />
+          <NavigationProperty Name="WorkList" Relationship="Model1.EmployeeWorkList" FromRole="Employee" ToRole="WorkList" />
+          <NavigationProperty Name="Shop" Relationship="Model1.EmployeeShop" FromRole="Employee" ToRole="Shop" />
+          <Property Name="ShopId" Type="Int32" Nullable="true" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="Difficulty" Type="String" Nullable="false" />
+          <Property Name="PreparationTime" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="WorkList" Relationship="Model1.WorkListProduct" FromRole="Product" ToRole="WorkList" />
+          <Property Name="WorkListId" Type="Int32" Nullable="true" />
+        </EntityType>
+        <EntityType Name="WorkList">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Employee" Relationship="Model1.EmployeeWorkList" FromRole="WorkList" ToRole="Employee" />
+          <NavigationProperty Name="Product" Relationship="Model1.WorkListProduct" FromRole="WorkList" ToRole="Product" />
+          <Property Name="TotalProductionTime" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="EmployeeWorkList">
+          <End Type="Model1.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="Model1.WorkList" Role="WorkList" Multiplicity="0..1" />
+        </Association>
+        <Association Name="WorkListProduct">
+          <End Type="Model1.WorkList" Role="WorkList" Multiplicity="0..1" />
+          <End Type="Model1.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WorkList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="WorkListId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Shop">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Address" Type="String" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="Model1.EmployeeShop" FromRole="Shop" ToRole="Employee" />
+        </EntityType>
+        <Association Name="EmployeeShop">
+          <End Type="Model1.Employee" Role="Employee" Multiplicity="*" />
+          <End Type="Model1.Shop" Role="Shop" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Shop">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="ShopId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="DirectorSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Director)">
+        <MappingFragment StoreEntitySet="DirectorSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+          <ScalarProperty Name="Patronimyc" ColumnName="Patronimyc" />
+          <ScalarProperty Name="Post" ColumnName="Post" />
+          <ScalarProperty Name="Login" ColumnName="Login" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmployeeSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Employee)">
+        <MappingFragment StoreEntitySet="EmployeeSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+          <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+          <ScalarProperty Name="Login" ColumnName="Login" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="ShopId" ColumnName="ShopId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Product)">
+        <MappingFragment StoreEntitySet="ProductSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Difficulty" ColumnName="Difficulty" />
+          <ScalarProperty Name="PreparationTime" ColumnName="PreparationTime" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="WorkListId" ColumnName="WorkListId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WorkListSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.WorkList)">
+        <MappingFragment StoreEntitySet="WorkListSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TotalProductionTime" ColumnName="TotalProductionTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ShopSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Shop)">
+        <MappingFragment StoreEntitySet="ShopSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="EmployeeWorkList" TypeName="Model1.EmployeeWorkList" StoreEntitySet="WorkListSet">
+      <EndProperty Name="Employee">
+        <ScalarProperty Name="Id" ColumnName="Employee_Id" />
+      </EndProperty>
+      <EndProperty Name="WorkList">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="Employee_Id" IsNull="false" />
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
